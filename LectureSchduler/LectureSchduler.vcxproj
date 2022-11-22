@@ -132,7 +132,11 @@
     <ClCompile Include="lecture.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Algorithm.h" />
     <ClInclude Include="schedule.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="교과목.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -5,7 +5,7 @@
 
 //숫자가 너무 크면 스택이 감당 못함
 
-#define MAX_LECTURE 1341 //강의의 숫자
+#define MAX_LECTURE 1341 //자료에 있는 강의의 숫자
 #define MAX_LEN 150 //글자의 최대 숫자 
 
 typedef struct Lecture
@@ -15,7 +15,8 @@ typedef struct Lecture
 	char lec_number[MAX_LEN];	//학수번호
 	char lec_room[MAX_LEN];		//강의실
 	char department[MAX_LEN];	//학과(강의 설립 학과)
-	char major[MAX_LEN];		//이수 구분
+	char cmp_clf[MAX_LEN];		//이수 구분(Complete Classfication)
+	int year;					//학년
 	int credit;					//학점
 	int start_time;				//시작시간 //만약 [월1,2 화3,4]인 경우 103으로 표시
 	int end_time;				//종료시간 //만약 [월1,2 화3,4]인 경우 204으로 표시
@@ -28,8 +29,9 @@ void lec_print(Lecture lec)
 	printf("인덱스 : %d\n", lec.index);
 	printf("강의명 : %s\n", lec.name);
 	printf("학과 : %s\n", lec.department);
+	printf("학년 : %d\n", lec.year);
 	printf("학수번호 : %s\n", lec.lec_number);
-	printf("이수구분 : %s\n", lec.major);
+	printf("이수구분 : %s\n", lec.cmp_clf);
 	printf("강의실 : %s\n", lec.lec_room);
 	printf("학점 : %d\n", lec.credit);
 	printf("시작시간 : %d\n", lec.start_time);
@@ -82,12 +84,21 @@ Lecture lec_search(int idx)
 			strcpy(temp.department, temp_char);
 		}
 
+		else if (strstr(str, "CRS_SHYR") != NULL)
+		{
+			//학년
+			strcpy(temp_char, strstr(str, ": ") + 2);
+			temp_char[strlen(temp_char) - 2] = NULL;
+			temp.year = (int)(temp_char[0] - '0');
+		}
+
+
 		else if (strstr(str, "CMP_DIV_NM") != NULL)
 		{
 			//이수구분
 			strcpy(temp_char, strstr(str, ": \"") + 3);
 			temp_char[strlen(temp_char) - 3] = NULL;
-			strcpy(temp.major, temp_char);
+			strcpy(temp.cmp_clf, temp_char);
 		}
 
 		else if (strstr(str, "LECT_TIME_ROOM") != NULL)

@@ -1,7 +1,9 @@
-﻿// 주의 : 메모장 저장 시 인코딩을 ANSI로 해야 한글이 안깨집니다.
+﻿//"교과목.txt에 있는 2022년 2학기 수업 1341개를 세팅 및 추천하는 프로그램.
+// 주의 : 메모장 저장 시 인코딩을 ANSI로 해야 한글이 안깨집니다.
 
 #include "schedule.h"
 #include "lecture.h"
+#include "Algorithm.h"
 
 
 int main()
@@ -10,15 +12,15 @@ int main()
 	Lecture lec;
 	int lec_index_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호만 있는 array,
 	int idx = 0;
-
 	
+
 	for (int i = 0; i < MAX_LECTURE; i++)
 	{
 		lec = lec_search(i); //원하는 인덱스를 삽입
 
-		printf("%d ", i); //실행중인지 확인
+		printf("%5d ", i); //실행중인지 확인
 
-		if (!strcmp(lec.name, "교육통계"))
+		if (strstr(lec.department, "게임전공") != NULL)
 		{
 			lec_index_array[idx] = i;
 			idx++;
