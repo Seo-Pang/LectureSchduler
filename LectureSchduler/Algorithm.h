@@ -5,7 +5,13 @@
 
 #define MAX_QUESTION
 
-typedef int UserInfo;
+typedef int Preference; //질문을 만들고, 그 질문을 값을 담을 int 값
+
+typedef struct UserInfo
+{
+	int year;
+	char major[MAX_LEN];
+}UserInfo;
 
 /*
 이 헤더파일에 구현해야 할 것은 0 - 1 배낭문제
@@ -22,13 +28,16 @@ DP를 실행하기 위해 새로운 DP 표를 만들어야 한다.
 */
 
 
-//질문에 따라 리스트를 만들어 반환하고, 이를 가중치 설정에 사용함.
-UserInfo *ask_basic()
+//(수정필요) 질문에 따라 리스트를 만들어 반환하고, 이를 가중치 설정에 사용함. 
+Preference *ask_basic()
 {
-	UserInfo list[10] = { 0, };
+	Preference list[10] = { 0, };
 
 	printf("수강해야 할 기초 교양을 입력해주세요.\n");
 	scanf("%d", &list[0]);
+
+	/* 
+	//수정해서 weight_setting_basic() 함수랑 호환되게 해야함
 
 	printf("수강해야 할 균형 교양 분야를 입력해주세요.\n");
 	scanf("%d", &list[1]);
@@ -57,24 +66,48 @@ UserInfo *ask_basic()
 
 	printf("질문을 합니다[1~9].\n");
 	scanf("%d", &list[9]);
-
+	*/
 	return list;
 }
 
 
+//학년과 이름을 물어보고 이를 가지고 있는 구조체를 반환함
+UserInfo ask_major()
+{
+	UserInfo user = { 0, "" };
+	printf("당신의 전공은 무엇입니까?\n");
+	scanf("%s", user.major);
+	printf("당신의 학년은 무엇입니까?\n");
+	scanf("%d", &user.year);
 
-//Lecture을 넣어서, 이를 인덱스와 가중치를 가진 LecArray로 반환함.
-LecArray weight_setting_basic(Lecture lec, UserInfo user)
+	return user;
+}
+
+//(수정필요) 전공 Lecture를 넣어서, 학년, 전공에 맞는지 판단하고, 맞으면 가중치 10과 인덱스를 반환함.
+LecArray weight_setting_major(Lecture lec, UserInfo user)
+{
+	LecArray la = { 0, };
+	la.index = lec.index;
+
+	if (strstr(lec.department, user.major) != NULL && lec.year == user.year)
+		la.weight = 10;
+	else
+		la.weight = 0;
+
+	return la;
+}
+
+
+//(수정 필요) 교양 Lecture을 넣어서, 이를 인덱스와 가중치를 가진 LecArray로 반환함.
+LecArray weight_setting_basic(Lecture lec, Preference user)
 {
 	LecArray la = { 0, };
 
 	la.index = lec.index;
 	if (strstr(lec.cmp_clf, "교필") != NULL)
 	{
-		la.weight = 9;
+		la.weight = 7;
 	}
-	
-	
 	return la;
 }
 

@@ -17,7 +17,7 @@ typedef struct Schedule
 }Schedule;
 
 
-//sche의 시간표를 참고하여 lec를 넣는 함수
+//sche의 시간표를 참고하여 lec를 넣고 시간표를 리턴
 Schedule push_lec(Lecture lec, Schedule sche)
 {
 	Schedule except = sche; //예외가 일어날 경우 대신 반환할 데이터
@@ -146,7 +146,7 @@ Schedule push_lec(Lecture lec, Schedule sche)
 	return sche;
 }
 
-//시간표를 전수검사 하여, index에 해당하는 수업이 있으면 삭제
+//시간표를 전수검사 하여, index에 해당하는 수업이 있으면 삭제하고 시간표를 리턴
 Schedule delete_lec(int index, Schedule sche)
 {
 	for (int i = 0; i < LATEST_TIME; i++)
@@ -178,6 +178,8 @@ Schedule delete_lec(int index, Schedule sche)
 	}
 	return sche;
 }
+//예시: sche = delete_lec(lec_array[0].index, sche);
+
 
 //시간표 출력
 void sche_print(Schedule sche)

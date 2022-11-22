@@ -12,15 +12,20 @@ int main()
 	Schedule sche = { {0,}, {0,}, {0,}, {0,}, {0,} };
 	Lecture lec;
 	LecArray lec_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
-	LecArray lec_insert[MAX_LECTURE] = { 0, }; //삽입에 필요한 어레이
-	UserInfo* user;
+	LecArray major_insert[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
+	LecArray basic_insert[MAX_LECTURE] = { 0, }; //교양 삽입에 필요한 어레이
+	Preference* user_preference;
+	UserInfo user_info;
 	int idx = 0;
 	
 	char string[MAX_LEN] = "";
 	int input = 0;
 	
-	//질문 입력받아 user에 저장
-	user = ask_basic();
+	//질문 입력받아 user_info에 저장
+	user_info = ask_major();
+
+	//질문 입력받아 user_preference에 저장
+	user_preference = ask_basic();
 	
 	//모든 인덱스를 탐색하면서 모든 강의의 가중치를 계산
 	for (int i = 0; i < MAX_LECTURE; i++)
@@ -29,18 +34,21 @@ int main()
 
 		printf("%5d ", i); //실행중인지 확인
 
-		lec_array[idx] = weight_setting_basic(lec, user);
+		if (strstr(lec.cmp_clf, "전") != NULL)	//전공일 경우,
+			lec_array[idx] = weight_setting_major(lec, user_info);
+		else									//교양일 경우,
+			lec_array[idx] = weight_setting_basic(lec, user_preference);
 		idx++;
 	}
 	printf("\n%d개를 탐색\n\n", idx);
 
 
-	//가중치 계산하는 부분
+	//(수정필요) 가중치 계산하는 부분
 	for (int i = 0, j = 0; i < idx; i++)
 	{
 		if (lec_array[i].weight > 8)
 		{
-			lec_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
+			basic_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
 			
 			lec = lec_search(lec_array[i].index);
 			lec_print(lec);
@@ -49,19 +57,16 @@ int main()
 		}
 	}
 
-	lec = lec_search(lec_insert[0].index);
-	sche = push_lec(lec, sche);
-	lec = lec_search(lec_insert[1].index);
-	sche = push_lec(lec, sche);
+	//교양 수업을 삽입하기 위해 LecArray에서 가져온 index에 삽입
+	for (int i = 0; i < 5; i++)
+	{
+		lec = lec_search(basic_insert[i].index);
+		sche = push_lec(lec, sche);
+	}
 
 	sche_print(sche);
-	//sche = delete_lec(lec_array[0].index, sche);
 
 	printf("\n\n");
-	printf("lec size : %d\n", (int)sizeof(Lecture));
-	printf("sche size : %d\n", (int)sizeof(Schedule));
-
-
 	return 0;
 }
 
