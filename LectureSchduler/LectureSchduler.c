@@ -8,59 +8,60 @@
 
 int main()
 {
+	FILE* data = fopen("교과목.txt", "r");
 	Schedule sche = { {0,}, {0,}, {0,}, {0,}, {0,} };
 	Lecture lec;
-	int lec_index_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호만 있는 array,
+	LecArray lec_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
+	LecArray lec_insert[MAX_LECTURE] = { 0, }; //삽입에 필요한 어레이
+	UserInfo* user;
 	int idx = 0;
 	
-
+	char string[MAX_LEN] = "";
+	int input = 0;
+	
+	//질문 입력받아 user에 저장
+	user = ask_basic();
+	
+	//모든 인덱스를 탐색하면서 모든 강의의 가중치를 계산
 	for (int i = 0; i < MAX_LECTURE; i++)
 	{
 		lec = lec_search(i); //원하는 인덱스를 삽입
 
 		printf("%5d ", i); //실행중인지 확인
 
-		if (strstr(lec.department, "게임전공") != NULL)
-		{
-			lec_index_array[idx] = i;
-			idx++;
-		}
-
-		if (!strcmp(lec.name, "공간에대한인문학적이해"))
-		{
-			lec_index_array[idx] = i;
-			idx++;
-		}
+		lec_array[idx] = weight_setting_basic(lec, user);
+		idx++;
 	}
-	
-	printf("%d개를 탐색\n\n", idx);
+	printf("\n%d개를 탐색\n\n", idx);
 
-	for (int i = 0; i < idx; i++)
+
+	//가중치 계산하는 부분
+	for (int i = 0, j = 0; i < idx; i++)
 	{
-		lec = lec_search(lec_index_array[i]); //원하는 인덱스를 삽입
-		
-		lec_print(lec);
+		if (lec_array[i].weight > 8)
+		{
+			lec_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
+			
+			lec = lec_search(lec_array[i].index);
+			lec_print(lec);
+
+			j++;
+		}
 	}
 
-	lec = lec_search(lec_index_array[0]);
+	lec = lec_search(lec_insert[0].index);
 	sche = push_lec(lec, sche);
-	lec = lec_search(lec_index_array[1]);
-	sche = push_lec(lec, sche);
-
-	lec = lec_search(604);
-
-	lec_print(lec);
+	lec = lec_search(lec_insert[1].index);
 	sche = push_lec(lec, sche);
 
 	sche_print(sche);
-
-	sche = delete_lec(lec_index_array[0], sche);
-	
-	sche_print(sche);
+	//sche = delete_lec(lec_array[0].index, sche);
 
 	printf("\n\n");
 	printf("lec size : %d\n", (int)sizeof(Lecture));
 	printf("sche size : %d\n", (int)sizeof(Schedule));
+
+
 	return 0;
 }
 

@@ -23,6 +23,12 @@ typedef struct Lecture
 	int week;					//요일, 월요일(1) ~ 금요일(5)
 } Lecture;
 
+typedef struct LecArray
+{
+	int index;		//강의 인덱스
+	int weight;		// 가중치
+}LecArray;
+
 //Lecture 구조체의 값을 출력
 void lec_print(Lecture lec)
 {
@@ -43,9 +49,9 @@ void lec_print(Lecture lec)
 //자료에서 n번째의 적힌 자료의 정보가 담긴 구조체를 반환(idx = 0, 1, ...)
 Lecture lec_search(int idx)
 {
+	FILE* data = fopen("교과목.txt", "r");
 	int line = 2 + (idx * 32); //0번째줄부터 시작하고, 메모장에서 idx번째의 정보가 담긴 구조체의 시작 라인
 	Lecture temp; //리턴 구조체
-	FILE* data = fopen("교과목.txt", "r");
 	char str[MAX_LEN];
 
 	//메모장에서 idx번째의 자료가 시작되는 줄로 이동

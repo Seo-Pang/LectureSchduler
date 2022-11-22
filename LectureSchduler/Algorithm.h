@@ -3,6 +3,10 @@
 #include "schedule.h"
 #include "lecture.h"
 
+#define MAX_QUESTION
+
+typedef int UserInfo;
+
 /*
 이 헤더파일에 구현해야 할 것은 0 - 1 배낭문제
 0-1 배낭문제를 쓰기 위해서는 Dynamic Programming을 사용해야 한다.
@@ -17,4 +21,60 @@
 DP를 실행하기 위해 새로운 DP 표를 만들어야 한다.
 */
 
+
+//질문에 따라 리스트를 만들어 반환하고, 이를 가중치 설정에 사용함.
+UserInfo *ask_basic()
+{
+	UserInfo list[10] = { 0, };
+
+	printf("수강해야 할 기초 교양을 입력해주세요.\n");
+	scanf("%d", &list[0]);
+
+	printf("수강해야 할 균형 교양 분야를 입력해주세요.\n");
+	scanf("%d", &list[1]);
+
+	printf("수강해야 할 핵심 교양 분야 를 입력해주세요.\n");
+	scanf("%d", &list[2]);
+
+	//여기부터는 일반교양 추천 선호도 조사
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[3]);
+
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[4]);
+
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[5]);
+
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[6]);
+
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[7]);
+
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[8]);
+
+	printf("질문을 합니다[1~9].\n");
+	scanf("%d", &list[9]);
+
+	return list;
+}
+
+
+
+//Lecture을 넣어서, 이를 인덱스와 가중치를 가진 LecArray로 반환함.
+LecArray weight_setting_basic(Lecture lec, UserInfo user)
+{
+	LecArray la = { 0, };
+
+	la.index = lec.index;
+	if (strstr(lec.cmp_clf, "교필") != NULL)
+	{
+		la.weight = 9;
+	}
+	
+	
+	return la;
+}
 

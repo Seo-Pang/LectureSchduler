@@ -179,6 +179,7 @@ Schedule delete_lec(int index, Schedule sche)
 	return sche;
 }
 
+//시간표 출력
 void sche_print(Schedule sche)
 {
 	printf("\n");
