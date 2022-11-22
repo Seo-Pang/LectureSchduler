@@ -45,10 +45,17 @@ int main()
 	lec = lec_search(lec_index_array[1]);
 	sche = push_lec(lec, sche);
 
+	lec = lec_search(604);
+
+	lec_print(lec);
+	sche = push_lec(lec, sche);
+
 	sche_print(sche);
 
-
+	sche = delete_lec(lec_index_array[0], sche);
 	
+	sche_print(sche);
+
 	printf("\n\n");
 	printf("lec size : %d\n", (int)sizeof(Lecture));
 	printf("sche size : %d\n", (int)sizeof(Schedule));

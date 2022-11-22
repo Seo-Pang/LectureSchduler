@@ -91,7 +91,6 @@ Schedule push_lec(Lecture lec, Schedule sche)
 		int lec_end_time = lec.end_time / 100 - 1; //500 => 5교시 => day[4]
 		int lec_hours = lec.end_time - lec.start_time + 1; //강의 시간
 		
-		printf("DEBUG: %d %d %d", lec_start_time, lec_end_time, lec_hours);
 		for (int i = lec_start_time; i <= lec_end_time; i++)
 		{
 			switch (lec.week)
@@ -144,6 +143,39 @@ Schedule push_lec(Lecture lec, Schedule sche)
 		
 	}
 	
+	return sche;
+}
+
+//시간표를 전수검사 하여, index에 해당하는 수업이 있으면 삭제
+Schedule delete_lec(int index, Schedule sche)
+{
+	for (int i = 0; i < LATEST_TIME; i++)
+	{
+		if (sche.mon[i] == index)
+		{
+			sche.mon[i] = 0;
+		}
+
+		if (sche.tus[i] == index)
+		{
+			sche.tus[i] = 0;
+		}
+
+		if (sche.wed[i] == index)
+		{
+			sche.wed[i] = 0;
+		}
+
+		if (sche.thu[i] == index)
+		{
+			sche.thu[i] = 0;
+		}
+
+		if (sche.fri[i] = index)
+		{
+			sche.fri[i] = 0;
+		}
+	}
 	return sche;
 }
 
