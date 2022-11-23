@@ -46,6 +46,12 @@ void lec_print(Lecture lec)
 	printf("\n\n");
 }
 
+// 강의 리스트 확인을 위한 출력 방식
+// 간단하게 학수번호, 강의명, 학점의 확인이 가능
+void lec_printList(Lecture lec) {
+	printf("                          [ %4d ]    %8s    %38s    %2d학점 \n", lec.index, lec.lec_number, lec.name, lec.credit);
+}
+
 //자료에서 n번째의 적힌 자료의 정보가 담긴 구조체를 반환(idx = 0, 1, ...)
 Lecture lec_search(int idx)
 {

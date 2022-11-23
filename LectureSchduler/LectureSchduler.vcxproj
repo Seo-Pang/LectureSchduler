@@ -135,6 +135,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Algorithm.h" />
+    <ClInclude Include="Console.h" />
     <ClInclude Include="schedule.h" />
   </ItemGroup>
   <ItemGroup>

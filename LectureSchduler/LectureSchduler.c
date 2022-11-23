@@ -16,6 +16,7 @@ int main()
 	LecArray basic_insert[MAX_LECTURE] = { 0, }; //교양 삽입에 필요한 어레이
 	Preference* user_preference;
 	UserInfo user_info;
+	int use_lec_index[MAX_LECTURE];
 	int idx = 0;
 	
 	char string[MAX_LEN] = "";
@@ -67,6 +68,9 @@ int main()
 	sche_print(sche);
 
 	printf("\n\n");
+
+	//Console 함수 적용 시 사용
+	//main_menu(&sche, &use_lec_index, &idx, &use_lec);
 	return 0;
 }
 
