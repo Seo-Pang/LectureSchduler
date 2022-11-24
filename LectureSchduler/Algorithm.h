@@ -99,7 +99,7 @@ LecArray weight_setting_major(Lecture lec, UserInfo user)
 
 
 //(수정 필요) 교양 Lecture을 넣어서, 이를 인덱스와 가중치를 가진 LecArray로 반환함.
-LecArray weight_setting_basic(Lecture lec, Preference user)
+LecArray weight_setting_basic(Lecture lec, Preference *user)
 {
 	LecArray la = { 0, };
 
