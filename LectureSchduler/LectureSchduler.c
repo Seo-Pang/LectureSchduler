@@ -47,7 +47,7 @@ int main()
 	//(수정필요) 가중치 계산하는 부분
 	for (int i = 0, j = 0; i < idx; i++)
 	{
-		if (lec_array[i].weight > 8)
+		if (lec_array[i].weight > 0)
 		{
 			basic_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
 			

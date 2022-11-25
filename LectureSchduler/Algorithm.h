@@ -7,7 +7,7 @@
 
 #define MAX_QUESTION
 
-typedef char Preference [5][20]; //선호 교양의 키워드를 담을 배열
+typedef char Preference; //선호 교양의 키워드를 담을 배열의 틀
 
 typedef struct UserInfo
 {
@@ -36,7 +36,7 @@ DP를 실행하기 위해 새로운 DP 표를 만들어야 한다.
 /// <returns></returns>
 Preference (*ask_basic())[20]
 {
-	Preference list;
+	Preference list[5][20];
 
 	printf("교양으로 듣고 싶은 키워드를 5개 입력하세요. (중복 가능)\n");
 	for (int i = 0; i < 5; i++)
@@ -114,15 +114,22 @@ LecArray weight_setting_major(Lecture lec, UserInfo user)
 
 
 //(수정 필요) 교양 Lecture을 넣어서, 이를 인덱스와 가중치를 가진 LecArray로 반환함.
-LecArray weight_setting_basic(Lecture lec, Preference *user)
+LecArray weight_setting_basic(Lecture lec, Preference* user[])
 {
 	LecArray la = { 0, };
 
 	la.index = lec.index;
-	if (strstr(lec.cmp_clf, "교필") != NULL)
+
+	if (strstr(lec.cmp_clf, "교필") || strstr(lec.cmp_clf, "교선") != NULL)
 	{
-		la.weight = 7;
+		printf("caught : %s\n", lec.name);
 	}
+	//if (strstr(lec.cmp_clf, "교필") != NULL)
+	//{
+	//	la.weight = 7;
+	//}
+
+
 	return la;
 }
 
