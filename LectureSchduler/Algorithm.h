@@ -3,9 +3,11 @@
 #include "schedule.h"
 #include "lecture.h"
 
+#pragma warning(disable:6031)
+
 #define MAX_QUESTION
 
-typedef int Preference; //질문을 만들고, 그 질문을 값을 담을 int 값
+typedef char Preference; //선호 교양의 키워드를 담을 배열의 틀
 
 typedef struct UserInfo
 {
@@ -28,46 +30,23 @@ DP를 실행하기 위해 새로운 DP 표를 만들어야 한다.
 */
 
 
-//(수정필요) 질문에 따라 리스트를 만들어 반환하고, 이를 가중치 설정에 사용함. 
-Preference *ask_basic()
+/// <summary>
+/// 교양으로 듣고싶은 키워드를 5개 설정하여 해당 문자열 5개의 배열을 리턴, MAXBUFFER : 20
+/// </summary>
+/// <returns></returns>
+Preference* ask_basic()
 {
-	Preference list[10] = { 0, };
+	static Preference list[5][20];
 
-	printf("수강해야 할 기초 교양을 입력해주세요.\n");
-	scanf("%d", &list[0]);
+	printf("교양으로 듣고 싶은 키워드를 5개 입력하세요. (중복 가능)\n");
+	for (int i = 0; i < 5; i++)
+	{
+		printf("키워드 %d : ", i + 1);
+		scanf("%s", list[i]);
+		printf("%s\n", list[i]);
+	}
 
-	/* 
-	//수정해서 weight_setting_basic() 함수랑 호환되게 해야함
-
-	printf("수강해야 할 균형 교양 분야를 입력해주세요.\n");
-	scanf("%d", &list[1]);
-
-	printf("수강해야 할 핵심 교양 분야 를 입력해주세요.\n");
-	scanf("%d", &list[2]);
-
-	//여기부터는 일반교양 추천 선호도 조사
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[3]);
-
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[4]);
-
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[5]);
-
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[6]);
-
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[7]);
-
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[8]);
-
-	printf("질문을 합니다[1~9].\n");
-	scanf("%d", &list[9]);
-	*/
-	return list;
+	return (Preference*) list;
 }
 
 
@@ -98,16 +77,31 @@ LecArray weight_setting_major(Lecture lec, UserInfo user)
 }
 
 
-//(수정 필요) 교양 Lecture을 넣어서, 이를 인덱스와 가중치를 가진 LecArray로 반환함.
-LecArray weight_setting_basic(Lecture lec, Preference *user)
+/// <summary>
+/// 입력받은 키워드를 바탕으로 교양강의의 가중치를 증가시킴
+/// </summary>
+/// <param name="lec"></param>
+/// <param name="user"></param>
+/// <returns></returns>
+LecArray weight_setting_basic(Lecture lec, Preference (*user)[20])
 {
 	LecArray la = { 0, };
 
 	la.index = lec.index;
-	if (strstr(lec.cmp_clf, "교필") != NULL)
+
+
+	if (strstr(lec.cmp_clf, "교필") || strstr(lec.cmp_clf, "교선") != NULL)
 	{
-		la.weight = 7;
+		//printf("caught : %s\n", lec.name);
+		for (int i = 0; i < 5; i++)
+		{
+			if (strstr(lec.name, user[i]) != NULL)
+				la.weight++;
+		}
 	}
+
+
+
 	return la;
 }
 

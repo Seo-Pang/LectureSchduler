@@ -14,7 +14,7 @@ int main()
 	LecArray lec_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
 	LecArray major_insert[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
 	LecArray basic_insert[MAX_LECTURE] = { 0, }; //교양 삽입에 필요한 어레이
-	Preference* user_preference;
+	Preference (*user_preference)[20];
 	UserInfo user_info;
 	int use_lec_index[MAX_LECTURE];
 	int idx = 0;
@@ -26,7 +26,7 @@ int main()
 	user_info = ask_major();
 
 	//질문 입력받아 user_preference에 저장
-	user_preference = ask_basic();
+	user_preference = (void*)ask_basic();
 	
 	//모든 인덱스를 탐색하면서 모든 강의의 가중치를 계산
 	for (int i = 0; i < MAX_LECTURE; i++)
@@ -47,7 +47,7 @@ int main()
 	//(수정필요) 가중치 계산하는 부분
 	for (int i = 0, j = 0; i < idx; i++)
 	{
-		if (lec_array[i].weight > 8)
+		if (lec_array[i].weight > 0)
 		{
 			basic_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
 			
