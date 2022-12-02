@@ -23,10 +23,10 @@ int main()
 	int input = 0;
 	
 	//질문 입력받아 user_info에 저장
-	user_info = ask_major();
+	user_info = get_UserInfo();
 
 	//질문 입력받아 user_preference에 저장
-	user_preference = (void*)ask_basic();
+	user_preference = (void*)get_Basic();
 	
 	//모든 인덱스를 탐색하면서 모든 강의의 가중치를 계산
 	for (int i = 0; i < MAX_LECTURE; i++)

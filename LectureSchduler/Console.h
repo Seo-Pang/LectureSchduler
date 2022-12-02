@@ -10,6 +10,20 @@
 #include "lecture.h"
 #include "Algorithm.h"
 
+static void getError() {
+	system("cls");
+	for (int i = 0; i < 11; i++) {
+		printf("\n");
+	}
+	printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+	printf("\n");
+	printf("\n");
+	printf("                                                Error! 잘못 입력하셨습니다.\n");
+	printf("\n");
+	printf("\n");
+	printf("                         ==========     ==========     ============     ==========      ==========\n");
+	Sleep(2000);
+}
 static void end_program() {
 	system("cls");
 	for (int i = 0; i < 11; i++) {
@@ -88,8 +102,136 @@ static int view_lecture(int a) {
 	}
 }
 
-static void create_timetable(Schedule* sche) {
+static UserInfo get_UserInfoConsole() {
+	UserInfo user = { 0, "", 0 };
+	int checkNum = 0;
+	int getYear = 0;
+	char getMajor[] = "";
+	int getCredit = 0;
+	while (checkNum <= 3) {
+		system("cls");
+		for (int i = 0; i < 9; i++) {
+			printf("\n");
+		}
+		printf("                         ==========     ==========     사용자  정보     ==========      ==========\n");
+		printf("\n");
+		if (user.year >= 1 && user.year <= 4) {
+			printf("                                        사용자의 학년                       %d 학년\n", user.year);
+		}
+		else {
+			printf("                                        사용자의 학년                     정보 없음\n");
+		}
+		printf("\n");
+		if (user.major != "") {
+			printf("                                        사용자의 전공           %20s\n", user.major);
+		}
+		else {
+			printf("                                        사용자의 전공                     정보 없음\n");
+		}
+		printf("\n");
+		printf("                                        이번 학기 최대 학점                 %2d 학점\n", user.credit);
+		printf("\n");
+		printf("                         ==========     ==========     ============     ==========      ==========\n");
+		if (checkNum == 0) {
+			printf("\n                       당신의 학년을 입력해 주세요. 0을 입력하면 취소됩니다. >>> ");
+			scanf("%d", &getYear);
+			if (getYear < 0 || getYear > 4) {
+				getError();
+			}
+			else if (getYear == 0) {
+				break;
+			}
+			else {
+				user.year = getYear;
+				checkNum++;
+			}
+		}
+		else if (checkNum == 1) {
+			printf("\n                       당신의 전공을 입력해 주세요. >>> ");
+			scanf("%s", &getMajor);
+			strcmp(user.major, getMajor);
+			checkNum++;
+		}
+		else if (checkNum == 2) {
+			printf("\n                       당신의 이번 학기 최대 수강 가능 학점을 입력해 주세요. >>> ");
+			scanf("%d", &getCredit);
+			user.credit = getCredit;
+			checkNum++;
+		}
+		else if (checkNum == 3) {
+			printf("\n                       사용자의 정보를 입력하고 있습니다... 기다려 주세요...");
+			Sleep(3000);
+			return user;
+		}
+	}
+}
 
+static void get_BasicConsole(Preference* list) {
+	for (int a = 0; a < 5; a++) {
+		system("cls");
+		for (int i = 0; i < 11; i++) {
+			printf("\n");
+		}
+		printf("                         ==========     ==========     교양  키워드     ==========      ==========\n");
+		printf("\n");
+		for (int i = 0; i < 5; i++) {
+			if (list[i] == NULL)
+				printf("                                        [ %d ]                          키워드 없음\n", i + 1);
+			else
+				printf("                                        [ %d ]                  %20s\n", i + 1, list[i]);
+		}
+		printf("\n");
+		printf("                         ==========     ==========     ============     ==========      ==========\n");
+		printf("                         교양으로 듣고 싶은 키워드를 입력해주세요. (현재 %d개) >>> ", a + 1);
+		scanf("%s", list[a]);
+	}
+}
+
+static int* create_timetable(Schedule* sche) {
+	FILE* data = fopen("교과목.txt", "r"); //파일 읽어오기
+	Lecture lec;
+	LecArray lec_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
+	LecArray major_insert[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
+	LecArray basic_insert[MAX_LECTURE] = { 0, }; //교양 삽입에 필요한 어레이
+	Preference(*user_preference)[20];
+	int use_lec_index[MAX_LECTURE];
+	int idx = 0;
+
+	UserInfo user_info = get_UserInfo();
+	int canUseCredit = user_info.credit;
+
+	/*
+	for (int i = 0; i < MAX_LECTURE; i++) {
+		lec = lec_search(i);
+		if (strstr(lec.cmp_clf, "전") != NULL)	//전공일 경우,
+			lec_array[idx] = weight_setting_major(lec, user_info);
+		else									//교양일 경우,
+			lec_array[idx] = weight_setting_basic(lec, user_preference);
+		idx++;
+	}
+
+	for (int i = 0, j = 0; i < idx; i++)
+	{
+		if (lec_array[i].weight > 0)
+		{
+			basic_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
+
+			lec = lec_search(lec_array[i].index);
+
+			j++;
+		}
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		lec = lec_search(basic_insert[i].index);
+		if(canUseCredit >= lec.credit){
+			*sche = push_lec(lec, *sche);
+			canUseCredit -= lec.credit;
+
+		}
+	}
+	*/
 }
 
 static int view_timetable(Schedule sche, int use_lec_index[], int* idx) {

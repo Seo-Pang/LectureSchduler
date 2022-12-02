@@ -2,6 +2,7 @@
 
 #include "schedule.h"
 #include "lecture.h"
+#include "Console.h"
 
 #pragma warning(disable:6031)
 
@@ -13,6 +14,8 @@ typedef struct UserInfo
 {
 	int year;
 	char major[MAX_LEN];
+	int credit;
+
 }UserInfo;
 
 /*
@@ -34,30 +37,20 @@ DP를 실행하기 위해 새로운 DP 표를 만들어야 한다.
 /// 교양으로 듣고싶은 키워드를 5개 설정하여 해당 문자열 5개의 배열을 리턴, MAXBUFFER : 20
 /// </summary>
 /// <returns></returns>
-Preference* ask_basic()
+Preference* get_Basic()
 {
 	static Preference list[5][20];
 
-	printf("교양으로 듣고 싶은 키워드를 5개 입력하세요. (중복 가능)\n");
-	for (int i = 0; i < 5; i++)
-	{
-		printf("키워드 %d : ", i + 1);
-		scanf("%s", list[i]);
-		printf("%s\n", list[i]);
-	}
+	get_BasicConsole(list);
 
 	return (Preference*) list;
 }
 
 
 //학년과 이름을 물어보고 이를 가지고 있는 구조체를 반환함
-UserInfo ask_major()
+UserInfo get_UserInfo()
 {
-	UserInfo user = { 0, "" };
-	printf("당신의 전공은 무엇입니까?\n");
-	scanf("%s", user.major);
-	printf("당신의 학년은 무엇입니까?\n");
-	scanf("%d", &user.year);
+	UserInfo user = get_UserInfoConsole();
 
 	return user;
 }
