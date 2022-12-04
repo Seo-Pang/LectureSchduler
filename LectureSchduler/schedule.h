@@ -8,16 +8,15 @@ typedef int Day;
 typedef struct Schedule
 {
 	//0번째 값은 1교시에 그 값에 해당하는 수업이 있다는 뜻
-	Day mon[LATEST_TIME]; //mon[0]은 월요일 1교시, fri[8]은 금요일 9교시
+	Day mon[LATEST_TIME];	//mon[0]은 월요일 1교시, fri[8]은 금요일 9교시
 	Day tus[LATEST_TIME];
 	Day wed[LATEST_TIME];
 	Day thu[LATEST_TIME];
 	Day fri[LATEST_TIME];
-
 }Schedule;
 
 
-//sche의 시간표를 참고하여 lec를 넣고 시간표를 리턴
+//sche의 시간표를 참고하여 lec의 index를 넣고 시간표를 리턴
 Schedule push_lec(Lecture lec, Schedule sche)
 {
 	Schedule except = sche; //예외가 일어날 경우 대신 반환할 데이터
@@ -142,7 +141,6 @@ Schedule push_lec(Lecture lec, Schedule sche)
 
 		
 	}
-	
 	return sche;
 }
 
@@ -179,6 +177,124 @@ Schedule delete_lec(int index, Schedule sche)
 	return sche;
 }
 //예시: sche = delete_lec(lec_array[0].index, sche);
+
+
+//시간표에 강의를 넣을 수 있으면 1을 반환, 없으면 0을 반환
+int can_insert(Lecture lec, Schedule sche)
+{
+	if (lec.week > 10) //수업이 일주일에 여러번 있는 경우
+	{
+		int lec_start_time = lec.start_time;
+		int lec_end_time = lec.end_time;
+		int lec_week = lec.week;
+		while (lec.week != 0)
+		{
+			lec_week = lec.week % 10;
+			lec_start_time = lec.start_time % 100;
+			lec_end_time = lec.end_time % 100;
+
+			for (int i = lec_start_time; i <= lec_end_time; i++)
+			{
+				switch (lec_week)
+				{
+				case 1:
+					if (sche.mon[i] != 0) //만약 데이터가 있다면
+					{
+						return 0;
+					}
+					sche.mon[i] = lec.index;
+					break;
+				case 2:
+					if (sche.tus[i] != 0) //만약 데이터가 있다면
+					{
+						return 0;
+					}
+					sche.tus[i] = lec.index;
+					break;
+				case 3:
+					if (sche.wed[i] != 0) //만약 데이터가 있다면
+					{
+						return 0;
+					}
+					sche.wed[i] = lec.index;
+					break;
+				case 4:
+					if (sche.thu[i] != 0) //만약 데이터가 있다면
+					{
+						return 0;
+					}
+					sche.thu[i] = lec.index;
+					break;
+				case 5:
+					if (sche.fri[i] != 0) //만약 데이터가 있다면
+					{
+						return 0;
+					}
+					sche.fri[i] = lec.index;
+					break;
+				default:
+					break;
+				}
+			}
+			lec.week = lec.week / 10;
+			lec.start_time = lec.start_time / 100;
+			lec.end_time = lec.end_time / 100;
+		}
+	}
+	else
+	{
+		int lec_start_time = lec.start_time / 100 - 1; //300 => 3교시 =>day[2]
+		int lec_end_time = lec.end_time / 100 - 1; //500 => 5교시 => day[4]
+		int lec_hours = lec.end_time - lec.start_time + 1; //강의 시간
+
+		for (int i = lec_start_time; i <= lec_end_time; i++)
+		{
+			switch (lec.week)
+			{
+			case 1:
+				if (sche.mon[i] != 0) //만약 데이터가 있다면
+				{
+					return 0;
+				}
+				sche.mon[i] = lec.index;
+				break;
+			case 2:
+				if (sche.tus[i] != 0) //만약 데이터가 있다면
+				{
+					return 0;
+				}
+				sche.tus[i] = lec.index;
+				break;
+			case 3:
+				if (sche.wed[i] != 0) //만약 데이터가 있다면
+				{
+					return 0;
+				}
+				sche.wed[i] = lec.index;
+				break;
+			case 4:
+				if (sche.thu[i] != 0) //만약 데이터가 있다면
+				{
+					return 0;
+				}
+				sche.thu[i] = lec.index;
+				break;
+			case 5:
+				if (sche.fri[i] != 0) //만약 데이터가 있다면
+				{
+					return 0;
+				}
+				sche.fri[i] = lec.index;
+				break;
+			default:
+				break;
+			}
+		}
+
+
+	}
+	return 1;
+}
 
 
 //시간표 출력

@@ -22,6 +22,9 @@ int main()
 	char string[MAX_LEN] = "";
 	int input = 0;
 	
+	lec = lec_search(1190);
+	lec_print(lec);
+
 	//질문 입력받아 user_info에 저장
 	user_info = ask_major();
 
@@ -47,23 +50,23 @@ int main()
 	//(수정필요) 가중치 계산하는 부분
 	for (int i = 0, j = 0; i < idx; i++)
 	{
-		if (lec_array[i].weight > 0)
+		if (lec_array[i].weight > 0) //가중치가 있을 경우에만 실행
 		{
 			basic_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
+			basic_insert[j].credit = lec_array[i].credit;
+			basic_insert[j].weight = lec_array[i].weight;
 			
 			lec = lec_search(lec_array[i].index);
 			lec_print(lec);
-
+			
 			j++;
 		}
 	}
 
 	//교양 수업을 삽입하기 위해 LecArray에서 가져온 index에 삽입
-	for (int i = 0; i < 5; i++)
-	{
-		lec = lec_search(basic_insert[i].index);
-		sche = push_lec(lec, sche);
-	}
+	//알고리즘으로 만들어햐 하는 부분 
+	sche = DynamicProgrammingScheduling(basic_insert);
+
 
 	sche_print(sche);
 

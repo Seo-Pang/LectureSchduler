@@ -8,6 +8,7 @@
 #define MAX_LECTURE 1341 //자료에 있는 강의의 숫자
 #define MAX_LEN 150 //글자의 최대 숫자 
 
+//강의 구조체
 typedef struct Lecture
 {
 	int index;					//인덱스
@@ -22,12 +23,6 @@ typedef struct Lecture
 	int end_time;				//종료시간 //만약 [월1,2 화3,4]인 경우 204으로 표시
 	int week;					//요일, 월요일(1) ~ 금요일(5)
 } Lecture;
-
-typedef struct LecArray
-{
-	int index;		//강의 인덱스
-	int weight;		// 가중치
-}LecArray;
 
 //Lecture 구조체의 값을 출력
 void lec_print(Lecture lec)
