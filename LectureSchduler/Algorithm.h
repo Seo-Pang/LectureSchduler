@@ -18,6 +18,8 @@ typedef struct UserInfo
 
 }UserInfo;
 
+UserInfo get_UserInfo_Console();
+
 /*
 이 헤더파일에 구현해야 할 것은 0 - 1 배낭문제
 0-1 배낭문제를 쓰기 위해서는 Dynamic Programming을 사용해야 한다.
@@ -50,7 +52,7 @@ Preference* get_Basic()
 //학년과 이름을 물어보고 이를 가지고 있는 구조체를 반환함
 UserInfo get_UserInfo()
 {
-	UserInfo user = get_UserInfoConsole();
+	UserInfo user = get_UserInfo_Console();
 
 	return user;
 }
@@ -97,4 +99,3 @@ LecArray weight_setting_basic(Lecture lec, Preference (*user)[20])
 
 	return la;
 }
-

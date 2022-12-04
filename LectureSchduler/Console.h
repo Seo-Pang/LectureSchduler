@@ -6,8 +6,6 @@
 #include <stdlib.h>
 #include <conio.h>
 
-#include "schedule.h"
-#include "lecture.h"
 #include "Algorithm.h"
 
 static void getError() {
@@ -41,68 +39,7 @@ static void end_program() {
 	exit(0);
 }
 
-static int view_lecture(int a) {
-	Lecture lec;
-
-	int keyNum = a;
-	int getKey = 0;
-	int idx = 0;
-	system("cls");
-	for (int i = 0; i < 6; i++) {
-		printf("\n");
-	}
-	printf("\n");
-	printf("                         ==========     ==========     강의  리스트     ==========      ==========\n");
-	printf("\n");
-	for (int j = 0; j < 10; j++) {
-		idx = (keyNum * 10) + j;
-		if (idx < MAX_LECTURE) {
-			lec = lec_search(idx);
-			lec_printList(lec);
-		}
-		else {
-			printf("\n");
-		}
-	}
-	printf("\n");
-	printf("                                             <- 이전 | ESC 돌아가기 | 다음 ->                     \n");
-	printf("\n");
-	printf("                         ==========     ==========      %3d 페이지      ==========      ==========\n", (keyNum + 1));
-	while (1) {
-		if (kbhit()) {
-			getKey = getch();
-			if (getKey == 224) {
-				getKey = getch();
-				switch (getKey) {
-				case 75:
-					keyNum--;
-					if (keyNum >= 0) {
-						view_lecture(keyNum);
-					}
-					else {
-						return 0;
-					}
-					break;
-				case 77:
-					keyNum++;
-					if (keyNum <= 134) {
-						view_lecture(keyNum);
-					}
-					else {
-						return 0;
-					}
-					break;
-				}
-			}
-			else if (getKey == 27) {
-				keyNum = -1;
-				return 0;
-			}
-		}
-	}
-}
-
-static UserInfo get_UserInfoConsole() {
+UserInfo get_UserInfo_Console() {
 	UserInfo user = { 0, "", 0 };
 	int checkNum = 0;
 	int getYear = 0;
@@ -166,7 +103,7 @@ static UserInfo get_UserInfoConsole() {
 	}
 }
 
-static void get_BasicConsole(Preference* list) {
+static void get_Basic_Console(Preference* list) {
 	for (int a = 0; a < 5; a++) {
 		system("cls");
 		for (int i = 0; i < 11; i++) {
@@ -187,6 +124,67 @@ static void get_BasicConsole(Preference* list) {
 	}
 }
 
+static int view_lecture(int a) {
+	Lecture lec;
+
+	int keyNum = a;
+	int getKey = 0;
+	int idx = 0;
+	system("cls");
+	for (int i = 0; i < 6; i++) {
+		printf("\n");
+	}
+	printf("\n");
+	printf("                         ==========     ==========     강의  리스트     ==========      ==========\n");
+	printf("\n");
+	for (int j = 0; j < 10; j++) {
+		idx = (keyNum * 10) + j;
+		if (idx < MAX_LECTURE) {
+			lec = lec_search(idx);
+			lec_printList(lec);
+		}
+		else {
+			printf("\n");
+		}
+	}
+	printf("\n");
+	printf("                                             <- 이전 | ESC 돌아가기 | 다음 ->                     \n");
+	printf("\n");
+	printf("                         ==========     ==========      %3d 페이지      ==========      ==========\n", (keyNum + 1));
+	while (1) {
+		if (kbhit()) {
+			getKey = getch();
+			if (getKey == 224) {
+				getKey = getch();
+				switch (getKey) {
+				case 75:
+					keyNum--;
+					if (keyNum >= 0) {
+						view_lecture(keyNum);
+					}
+					else {
+						return 0;
+					}
+					break;
+				case 77:
+					keyNum++;
+					if (keyNum <= 134) {
+						view_lecture(keyNum);
+					}
+					else {
+						return 0;
+					}
+					break;
+				}
+			}
+			else if (getKey == 27) {
+				keyNum = -1;
+				return 0;
+			}
+		}
+	}
+}
+
 static int* create_timetable(Schedule* sche) {
 	FILE* data = fopen("교과목.txt", "r"); //파일 읽어오기
 	Lecture lec;
@@ -197,7 +195,8 @@ static int* create_timetable(Schedule* sche) {
 	int use_lec_index[MAX_LECTURE];
 	int idx = 0;
 
-	UserInfo user_info = get_UserInfo();
+	UserInfo user_info;
+	user_info = get_UserInfo();
 	int canUseCredit = user_info.credit;
 
 	/*

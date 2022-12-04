@@ -1,9 +1,7 @@
 ﻿//"교과목.txt에 있는 2022년 2학기 수업 1341개를 세팅 및 추천하는 프로그램.
 // 주의 : 메모장 저장 시 인코딩을 ANSI로 해야 한글이 안깨집니다.
 
-#include "schedule.h"
-#include "lecture.h"
-#include "Algorithm.h"
+#include "console.h"
 
 
 int main()
@@ -21,7 +19,7 @@ int main()
 	
 	char string[MAX_LEN] = "";
 	int input = 0;
-	
+	/*
 	//질문 입력받아 user_info에 저장
 	user_info = get_UserInfo();
 
@@ -68,9 +66,9 @@ int main()
 	sche_print(sche);
 
 	printf("\n\n");
-
+	*/
 	//Console 함수 적용 시 사용
-	//main_menu(&sche, &use_lec_index, &idx, &use_lec);
+	main_menu(&sche, &use_lec_index, &idx);
 	return 0;
 }
 
