@@ -8,6 +8,7 @@
 #define MAX_LECTURE 1341 //자료에 있는 강의의 숫자
 #define MAX_LEN 150 //글자의 최대 숫자 
 
+//강의 구조체
 typedef struct Lecture
 {
 	int index;					//인덱스
@@ -22,12 +23,6 @@ typedef struct Lecture
 	int end_time;				//종료시간 //만약 [월1,2 화3,4]인 경우 204으로 표시
 	int week;					//요일, 월요일(1) ~ 금요일(5)
 } Lecture;
-
-typedef struct LecArray
-{
-	int index;		//강의 인덱스
-	int weight;		// 가중치
-}LecArray;
 
 //Lecture 구조체의 값을 출력
 void lec_print(Lecture lec)
@@ -49,7 +44,7 @@ void lec_print(Lecture lec)
 // 강의 리스트 확인을 위한 출력 방식
 // 간단하게 학수번호, 강의명, 학점의 확인이 가능
 void lec_printList(Lecture lec) {
-	printf("                          [ %4d ]    %8s    %38s    %2d학점 \n", lec.index, lec.lec_number, lec.name, lec.credit);
+	printf("              [ %4d ] %8s %38s %32s %2d학점 \n", lec.index, lec.lec_number, lec.name, lec.lec_room, lec.credit);
 }
 
 //자료에서 n번째의 적힌 자료의 정보가 담긴 구조체를 반환(idx = 0, 1, ...)
@@ -68,17 +63,17 @@ Lecture lec_search(int idx)
 
 	char temp_char[MAX_LEN] = "";
 	//자료 추출 시작
-	do 
+	do
 	{
 		temp.index = idx;
 		fgets(str, MAX_LEN, data);
-		if(strstr(str, "SBJ_NM") != NULL)
+		if (strstr(str, "SBJ_NM") != NULL)
 		{
 			//강의명
 			strcpy(temp_char, strstr(str, ": \"") + 3);
 			temp_char[strlen(temp_char) - 3] = NULL;
 			strcpy(temp.name, temp_char);
-			
+
 		}
 		else if (strstr(str, "SBJ_NO") != NULL)
 		{
@@ -123,7 +118,7 @@ Lecture lec_search(int idx)
 			//시작시간
 			strcpy(temp_char, strstr(str, ": \"") + 5);
 			temp.start_time = 0;
-			if ((temp_char[1] == ',')||(temp_char[1] == '('))
+			if ((temp_char[1] == ',') || (temp_char[1] == '('))
 			{
 				temp_char[1] = NULL;
 			}
@@ -137,7 +132,7 @@ Lecture lec_search(int idx)
 			}
 			else
 			{
-				temp.start_time = (int)(temp_char[0] - '0') * 1000 + (int)(temp_char[1] - '0')* 100;
+				temp.start_time = (int)(temp_char[0] - '0') * 1000 + (int)(temp_char[1] - '0') * 100;
 			}
 			//시작시간이 2개인 경우
 			strcpy(temp_char, strstr(str, "(") + 2);
@@ -161,7 +156,7 @@ Lecture lec_search(int idx)
 					temp.start_time += (int)(temp_char[0] - '0') * 10 + (int)(temp_char[1] - '0');
 				}
 			}
-			
+
 			//종료시간
 			temp.end_time = 0;
 			strcpy(temp_char, strstr(str, "(") - 2);

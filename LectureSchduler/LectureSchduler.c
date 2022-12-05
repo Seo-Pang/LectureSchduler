@@ -1,31 +1,33 @@
-﻿//"교과목.txt에 있는 2022년 2학기 수업 1341개를 세팅 및 추천하는 프로그램.
-// 주의 : 메모장 저장 시 인코딩을 ANSI로 해야 한글이 안깨집니다.
-
-#include "console.h"
-
+﻿#include "Console.h"
 
 int main()
 {
+	/*
 	FILE* data = fopen("교과목.txt", "r");
 	Schedule sche = { {0,}, {0,}, {0,}, {0,}, {0,} };
 	Lecture lec;
 	LecArray lec_array[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
 	LecArray major_insert[MAX_LECTURE] = { 0, }; //구조체의 인덱스 번호랑 가중치 있는 array,
 	LecArray basic_insert[MAX_LECTURE] = { 0, }; //교양 삽입에 필요한 어레이
-	Preference (*user_preference)[20];
+	Preference(*user_preference)[20];
 	UserInfo user_info;
 	int use_lec_index[MAX_LECTURE];
 	int idx = 0;
-	
+
 	char string[MAX_LEN] = "";
 	int input = 0;
-	/*
+
+	//main_menu();
+
+	lec = lec_search(1190);
+	lec_print(lec);
+
 	//질문 입력받아 user_info에 저장
-	user_info = get_UserInfo();
+	user_info = ask_major();
 
 	//질문 입력받아 user_preference에 저장
-	user_preference = (void*)get_Basic();
-	
+	user_preference = (void*)ask_basic();
+
 	//모든 인덱스를 탐색하면서 모든 강의의 가중치를 계산
 	for (int i = 0; i < MAX_LECTURE; i++)
 	{
@@ -45,10 +47,12 @@ int main()
 	//(수정필요) 가중치 계산하는 부분
 	for (int i = 0, j = 0; i < idx; i++)
 	{
-		if (lec_array[i].weight > 0)
+		if (lec_array[i].weight > 0) //가중치가 있을 경우에만 실행
 		{
 			basic_insert[j].index = lec_array[i].index; //원하는 인덱스를 삽입
-			
+			basic_insert[j].credit = lec_array[i].credit;
+			basic_insert[j].weight = lec_array[i].weight;
+
 			lec = lec_search(lec_array[i].index);
 			lec_print(lec);
 
@@ -57,18 +61,17 @@ int main()
 	}
 
 	//교양 수업을 삽입하기 위해 LecArray에서 가져온 index에 삽입
-	for (int i = 0; i < 5; i++)
-	{
-		lec = lec_search(basic_insert[i].index);
-		sche = push_lec(lec, sche);
-	}
+	//알고리즘으로 만들어햐 하는 부분
+	sche = DynamicProgrammingScheduling(basic_insert, user_info);
+
 
 	sche_print(sche);
 
 	printf("\n\n");
 	*/
+
 	//Console 함수 적용 시 사용
-	main_menu(&sche, &use_lec_index, &idx);
+	main_menu();
 	return 0;
 }
 

@@ -1,67 +1,85 @@
-#pragma once
+ï»¿#pragma once
 
 #include "schedule.h"
 #include "lecture.h"
-#include "Console.h"
 
 #pragma warning(disable:6031)
 
-#define MAX_QUESTION
+#define MAX_CREDIT 21 //ìµœëŒ€ í•™ì  (21í•™ì )
+#define MAX_DP 10 //DPì— ê²Œì‚°í•  ë¬¼ê±´ ìˆ˜
 
-typedef char Preference; //¼±È£ ±³¾çÀÇ Å°¿öµå¸¦ ´ãÀ» ¹è¿­ÀÇ Æ²
+
+//ê°•ì˜ ì¸ë±ìŠ¤, í•™ì , ê°€ì¤‘ì¹˜ë¥¼ ê°€ì§€ê³  ìˆìŒ
+typedef struct LecArray
+{
+	int index;		//ê°•ì˜ ì¸ë±ìŠ¤
+	int credit;		//í•™ì 
+	int weight;		// ê°€ì¤‘ì¹˜
+}LecArray;
+
+//ê°€ë°© ë‚´ìš©ë¬¼ì„ êµ¬í˜„í•˜ê¸° ìœ„í•œ ìŠ¤íŠ¸ëŸ­ì³: ë¬´ê²Œì™€ index list
+typedef struct KnapsackArray
+{
+	int weight;
+	int index[MAX_CREDIT];	//ìµœëŒ€ í•™ì  ì´ìƒì˜ ìˆ˜ì—…ì„ ë„£ìœ¼ë©´ ê°€ë°©ì€ ë¬´ì¡°ê±´ í„°ì§
+	int knapsackCount;		//ê°€ë°©ì— ëª‡ ê°œì˜ ìˆ˜ì—…ì´ ë“¤ì–´ìˆëŠ”ì§€ countí•˜ëŠ” ìš©ë„
+}KnapsackArray;
+
+typedef char Preference;	//ì„ í˜¸ êµì–‘ì˜ í‚¤ì›Œë“œë¥¼ ë‹´ì„ ë°°ì—´ì˜ í‹€
 
 typedef struct UserInfo
 {
 	int year;
 	char major[MAX_LEN];
-	int credit;
-
+	int maxCredit;
 }UserInfo;
 
-UserInfo get_UserInfo_Console();
+int getCredit(UserInfo user) //ìœ ì €ì˜ ìµœëŒ€í•™ì  ì…ë ¥ë°›ì•„ì„œ ê°’ return
+{
+	return user.maxCredit;
+}
+
+UserInfo ask_major_console();
+
+Preference* ask_basic_console();
 
 /*
-ÀÌ Çì´õÆÄÀÏ¿¡ ±¸ÇöÇØ¾ß ÇÒ °ÍÀº 0 - 1 ¹è³¶¹®Á¦
-0-1 ¹è³¶¹®Á¦¸¦ ¾²±â À§ÇØ¼­´Â Dynamic ProgrammingÀ» »ç¿ëÇØ¾ß ÇÑ´Ù.
-±×·¯±â À§ÇØ¼­´Â Ç¥°¡ ÇÊ¿äÇÏ´Ù.
+ì´ í—¤ë”íŒŒì¼ì— êµ¬í˜„í•´ì•¼ í•  ê²ƒì€ 0 - 1 ë°°ë‚­ë¬¸ì œ
+0-1 ë°°ë‚­ë¬¸ì œë¥¼ ì“°ê¸° ìœ„í•´ì„œëŠ” Dynamic Programmingì„ ì‚¬ìš©í•´ì•¼ í•œë‹¤.
+ê·¸ëŸ¬ê¸° ìœ„í•´ì„œëŠ” í‘œê°€ í•„ìš”í•˜ë‹¤.
 
-ÇĞ°ú ÇĞ³âÀ» ÀÔ·ÂÇÏ¸é ÀÌ¿¡ ¸Â´Â Àü°øÀ» ¹èÁ¤ÇØÁÖ´Â ¾Ë°í¸®Áò.
-Áú¹®À» ¹Ş°í °­ÀÇ¸¦ Ãß·Á³»´Â ¾Ë°í¸®Áò, È¤Àº °¡ÁßÄ¡¸¦ ¼³Á¤ÇÏ´Â ¾Ë°í¸®ÁòÀÌ ÇÊ¿ä //°³¼³ÇĞ°ú¸¦ Ã£¾Æ °ü·Ã ºĞ¾ß¸¦ Á¦¿Ü
-¿øÇÏ´Â °ø°­À» ¼³Á¤ÇÏ¸é ±× °ø°­¿¡ µû¶ó °¡ÁßÄ¡¸¦ º¯È­ÇÏ°Ô ÇÏ´Â ¾Ë°í¸®ÁòÀÌ ÇÊ¿ä //°ø°­¿¡ ÇØ´çÇÏ´Â ¼ö¾÷Àº °¡ÁßÄ¡ 0
+í•™ê³¼ í•™ë…„ì„ ì…ë ¥í•˜ë©´ ì´ì— ë§ëŠ” ì „ê³µì„ ë°°ì •í•´ì£¼ëŠ” ì•Œê³ ë¦¬ì¦˜.
+ì§ˆë¬¸ì„ ë°›ê³  ê°•ì˜ë¥¼ ì¶”ë ¤ë‚´ëŠ” ì•Œê³ ë¦¬ì¦˜, í˜¹ì€ ê°€ì¤‘ì¹˜ë¥¼ ì„¤ì •í•˜ëŠ” ì•Œê³ ë¦¬ì¦˜ì´ í•„ìš” //ê°œì„¤í•™ê³¼ë¥¼ ì°¾ì•„ ê´€ë ¨ ë¶„ì•¼ë¥¼ ì œì™¸
+ì›í•˜ëŠ” ê³µê°•ì„ ì„¤ì •í•˜ë©´ ê·¸ ê³µê°•ì— ë”°ë¼ ê°€ì¤‘ì¹˜ë¥¼ ë³€í™”í•˜ê²Œ í•˜ëŠ” ì•Œê³ ë¦¬ì¦˜ì´ í•„ìš” //ê³µê°•ì— í•´ë‹¹í•˜ëŠ” ìˆ˜ì—…ì€ ê°€ì¤‘ì¹˜ 0
 
-±× °¡ÁßÄ¡¿¡ µû¶ó °­ÀÇ¸¦ Schedule ±¸Á¶Ã¼¿¡ ³Ö¾î DP¸¦ ½ÇÇàÇÏ´Â ¾Ë°í¸®ÁòÀÌ ÇÊ¿ä
+ê·¸ ê°€ì¤‘ì¹˜ì— ë”°ë¼ ê°•ì˜ë¥¼ Schedule êµ¬ì¡°ì²´ì— ë„£ì–´ DPë¥¼ ì‹¤í–‰í•˜ëŠ” ì•Œê³ ë¦¬ì¦˜ì´ í•„ìš”
 
-DP¸¦ ½ÇÇàÇÏ±â À§ÇØ »õ·Î¿î DP Ç¥¸¦ ¸¸µé¾î¾ß ÇÑ´Ù.
+DPë¥¼ ì‹¤í–‰í•˜ê¸° ìœ„í•´ ìƒˆë¡œìš´ DP í‘œë¥¼ ë§Œë“¤ì–´ì•¼ í•œë‹¤.
 */
 
 
 /// <summary>
-/// ±³¾çÀ¸·Î µè°í½ÍÀº Å°¿öµå¸¦ 5°³ ¼³Á¤ÇÏ¿© ÇØ´ç ¹®ÀÚ¿­ 5°³ÀÇ ¹è¿­À» ¸®ÅÏ, MAXBUFFER : 20
+/// êµì–‘ìœ¼ë¡œ ë“£ê³ ì‹¶ì€ í‚¤ì›Œë“œë¥¼ 5ê°œ ì„¤ì •í•˜ì—¬ í•´ë‹¹ ë¬¸ìì—´ 5ê°œì˜ ë°°ì—´ì„ ë¦¬í„´, MAXBUFFER : 20
 /// </summary>
 /// <returns></returns>
-Preference* get_Basic()
+Preference* ask_basic()
 {
-	static Preference list[5][20];
-
-	get_BasicConsole(list);
-
-	return (Preference*) list;
+	return ask_basic_console();
 }
 
 
-//ÇĞ³â°ú ÀÌ¸§À» ¹°¾îº¸°í ÀÌ¸¦ °¡Áö°í ÀÖ´Â ±¸Á¶Ã¼¸¦ ¹İÈ¯ÇÔ
-UserInfo get_UserInfo()
+//í•™ë…„ê³¼ ì´ë¦„ì„ ë¬¼ì–´ë³´ê³  ì´ë¥¼ ê°€ì§€ê³  ìˆëŠ” êµ¬ì¡°ì²´ë¥¼ ë°˜í™˜í•¨
+UserInfo ask_major()
 {
-	UserInfo user = get_UserInfo_Console();
-
-	return user;
+	return ask_major_console();
 }
 
-//(¼öÁ¤ÇÊ¿ä) Àü°ø Lecture¸¦ ³Ö¾î¼­, ÇĞ³â, Àü°ø¿¡ ¸Â´ÂÁö ÆÇ´ÜÇÏ°í, ¸ÂÀ¸¸é °¡ÁßÄ¡ 10°ú ÀÎµ¦½º¸¦ ¹İÈ¯ÇÔ.
+//(ìˆ˜ì •í•„ìš”) ì „ê³µ Lectureë¥¼ ë„£ì–´ì„œ, í•™ë…„, ì „ê³µì— ë§ëŠ”ì§€ íŒë‹¨í•˜ê³ , ë§ìœ¼ë©´ ê°€ì¤‘ì¹˜ 10ê³¼ ì¸ë±ìŠ¤ë¥¼ ë°˜í™˜í•¨.
 LecArray weight_setting_major(Lecture lec, UserInfo user)
 {
 	LecArray la = { 0, };
 	la.index = lec.index;
+	la.credit = lec.credit;
 
 	if (strstr(lec.department, user.major) != NULL && lec.year == user.year)
 		la.weight = 10;
@@ -73,19 +91,19 @@ LecArray weight_setting_major(Lecture lec, UserInfo user)
 
 
 /// <summary>
-/// ÀÔ·Â¹ŞÀº Å°¿öµå¸¦ ¹ÙÅÁÀ¸·Î ±³¾ç°­ÀÇÀÇ °¡ÁßÄ¡¸¦ Áõ°¡½ÃÅ´
+/// ì…ë ¥ë°›ì€ í‚¤ì›Œë“œë¥¼ ë°”íƒ•ìœ¼ë¡œ êµì–‘ê°•ì˜ì˜ ê°€ì¤‘ì¹˜ë¥¼ ì¦ê°€ì‹œí‚´
 /// </summary>
 /// <param name="lec"></param>
 /// <param name="user"></param>
 /// <returns></returns>
-LecArray weight_setting_basic(Lecture lec, Preference (*user)[20])
+LecArray weight_setting_basic(Lecture lec, Preference(*user)[20])
 {
 	LecArray la = { 0, };
 
 	la.index = lec.index;
+	la.credit = lec.credit;
 
-
-	if (strstr(lec.cmp_clf, "±³ÇÊ") || strstr(lec.cmp_clf, "±³¼±") != NULL)
+	if (strstr(lec.cmp_clf, "êµí•„") || strstr(lec.cmp_clf, "êµì„ ") != NULL)
 	{
 		//printf("caught : %s\n", lec.name);
 		for (int i = 0; i < 5; i++)
@@ -95,7 +113,109 @@ LecArray weight_setting_basic(Lecture lec, Preference (*user)[20])
 		}
 	}
 
-
-
 	return la;
 }
+
+//ê°€ì¤‘ì¹˜ê°€ ìˆëŠ” ëª¨ë“  ê°•ì˜ë“¤ì„ DPë¥¼ ì´ìš©í•´ scheë¥¼ ë°˜í™˜
+Schedule DynamicProgrammingScheduling(LecArray lecture[MAX_LECTURE], UserInfo user)
+{
+
+	// DPì— ì„œìš©í•  ê°€ì¤‘ì¹˜ ë°°ì—´[ê°•ì˜(ë¬¼ê±´)][ê°•ì˜ í•™ì (ë¬´ê²Œ)] {}
+	int maxCredit;
+	if (user.maxCredit < MAX_CREDIT) {
+		maxCredit = user.maxCredit;
+	}
+	else {
+		maxCredit = MAX_CREDIT;
+	}
+	KnapsackArray DP[MAX_LECTURE + 1][MAX_CREDIT + 1] = { 0, };
+	Schedule sche = { {0,}, {0,}, {0,}, {0,}, {0,} };
+	Lecture lec;
+
+	KnapsackArray beforeKnapsack = { 0, };
+	KnapsackArray newKnapsack = { 0 , };
+	int a = 0;
+	for (int i = 1; i < MAX_DP + 1; i++)
+	{
+		for (int DLC = 1; DLC < maxCredit + 1; DLC++) //ì„ì‹œ ê°€ë°© ë¬´ê²Œì—ì„œ ìµœëŒ€ ê°€ë°© ë¬´ê²Œê¹Œì§€ forë¬¸ì— ì˜í•´ ì„¤ì •ëœ ë³€ìˆ˜, Dynamic Limit Credit
+		{
+			beforeKnapsack = DP[i - 1][DLC]; //ì´ì „ ê°’ì„ ì§€ë‹ˆê³  ìˆëŠ” ê°€ë°©
+			newKnapsack.weight = DP[i - 1][DLC - lecture[i].credit].weight + lecture[i].weight; //ìƒˆë¡œ ë‹´ì„ ë•Œ ê°€ì¤‘ì¹˜
+			if (DLC < lecture[i].credit) //í•™ì ì„ ë„£ì„ ìˆ˜ ì—†ì„ Â‹Âš
+				newKnapsack.knapsackCount = DP[i - 1][0].knapsackCount;
+			else
+				newKnapsack.knapsackCount = DP[i - 1][DLC - lecture[i].credit].knapsackCount;
+
+
+
+			for (int i = 0; i < newKnapsack.knapsackCount; i++)
+			{
+				printf("index : %d\t", newKnapsack.index[i]);
+			}
+			printf("count: %d\n", newKnapsack.knapsackCount);
+
+			if (lecture[i].credit > DLC) //ê°•ì˜ì˜ í¬ê¸°ê°€ ì„ì‹œ í¬ê¸°ë³´ë‹¤ í¬ë‹¤ë©´
+			{
+				//ê°•ì˜ë¥¼ ë„£ì§€ ì•ŠìŒ
+				DP[i][DLC] = beforeKnapsack;
+			}
+			else
+			{
+				if (can_insert(lec_search(lecture[i].index), sche)) // ê°•ì˜ë¥¼ ë„£ì„ ìˆ˜ ìˆìœ¼ë©´
+				{
+					if (beforeKnapsack.weight >= newKnapsack.weight) //ê°•ì˜ë¥¼ ë„£ëŠ”ê²ƒë³´ë‹¤ ë„£ì§€ ì•Šì€ê²Œ ì´ë“ì´ë©´
+					{
+						DP[i][DLC] = beforeKnapsack;
+					}
+					else
+					{
+						newKnapsack.index[newKnapsack.knapsackCount] = lecture[i].index;
+						newKnapsack.knapsackCount++;
+						DP[i][DLC] = newKnapsack;
+						//DP[i][DLC].weight = newKnapsack.weight;
+						//DP[i][DLC].index[DP[i][DLC].knapsackCount++] = lecture[i].index;
+						printf("index ; %d\n", lecture[i].index);
+					}
+				}
+				else
+				{
+					//ê°•ì˜ë¥¼ ë„£ì§€ ì•ŠìŒ
+					DP[i][DLC] = beforeKnapsack;
+				}
+			}
+
+
+			for (int j = 0; j < 10; j++)
+			{
+				for (int k = 0; k < maxCredit + 1; k++)
+				{
+					printf("[%d]", DP[j][k].weight);
+				}
+				printf("\n");
+			}
+		}
+
+		printf("==============a: %d\n", a++);
+	}
+
+	int count = DP[MAX_DP][maxCredit].knapsackCount;
+	int weight = DP[MAX_DP][maxCredit].weight;
+	printf("count %d\n:", count);
+	printf("weight %d\n:", weight);
+
+	for (int i = 0; i < DP[MAX_DP][maxCredit].knapsackCount; i++)
+	{
+		printf("index : %d\t", DP[MAX_DP][maxCredit].index[i]);
+	}
+	printf("\n");
+
+	for (int i = 0; i < count; i++)
+	{
+		lec = lec_search(DP[MAX_DP][maxCredit].index[i]);
+		sche = push_lec(lec, sche);
+	}
+
+	return sche;
+
+}
+
