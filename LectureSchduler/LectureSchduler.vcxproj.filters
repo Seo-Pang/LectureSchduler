@@ -34,11 +34,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="gyoyang_ilban_2022.csv">
-      <Filter>리소스 파일</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="교과목.txt">
       <Filter>리소스 파일</Filter>
     </Text>
