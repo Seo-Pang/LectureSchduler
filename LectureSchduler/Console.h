@@ -15,7 +15,7 @@ void check_search(int a) {
 	for (int i = 0; i < 11; i++) {
 		printf("\n");
 	}
-	printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+	printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 	printf("\n");
 	printf("\n");
 	printf("                                        강의 리스트 검색중         [ %4d / %4d ]\n", a, MAX_LECTURE);
@@ -35,7 +35,7 @@ UserInfo ask_major_console() {
 		for (int i = 0; i < 9; i++) {
 			printf("\n");
 		}
-		printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+		printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 		printf("\n");
 		printf("                                        사용자의 전공 %28s\n", user.major);
 		printf("                                        사용자의 학년                      %2d 학년\n", user.year);
@@ -63,7 +63,7 @@ UserInfo ask_major_console() {
 	for (int i = 0; i < 9; i++) {
 		printf("\n");
 	}
-	printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+	printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 	printf("\n");
 	printf("                                        사용자의 전공 %28s\n", user.major);
 	printf("                                        사용자의 학년                      %2d 학년\n", user.year);
@@ -88,7 +88,7 @@ Preference* ask_basic_console() {
 		for (int i = 0; i < 10; i++) {
 			printf("\n");
 		}
-		printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+		printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 		printf("\n");
 		printf("                                                    교양 키워드 리스트\n\n");
 		for (int i = 0; i < inputNum; i++) {
@@ -105,7 +105,7 @@ Preference* ask_basic_console() {
 	for (int i = 0; i < 10; i++) {
 		printf("\n");
 	}
-	printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+	printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 	printf("\n");
 	printf("                                                    교양 키워드 리스트\n\n");
 	for (int i = 0; i < inputNum; i++) {
@@ -122,7 +122,7 @@ static void end_program() {
 	for (int i = 0; i < 11; i++) {
 		printf("\n");
 	}
-	printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+	printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 	printf("\n");
 	printf("\n");
 	printf("                                                 프로그램이 종료됩니다...\n");
@@ -145,7 +145,7 @@ static int view_lecture(int a) {
 		printf("\n");
 	}
 	printf("\n");
-	printf("                         ==========     ==========     강의  리스트     ==========      ==========\n");
+	printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 	printf("\n");
 	for (int j = 0; j < 10; j++) {
 		idx = (keyNum * 10) + j;
@@ -378,7 +378,7 @@ void main_menu()
 		for (int i = 0; i < 9; i++) {
 			printf("\n");
 		}
-		printf("                         ==========     ==========     공강 Builder     ==========      ==========\n");
+		printf("                         ==========     ==========      SB  System      ==========      ==========\n");
 		printf("\n");
 		printf("                                        강의 리스트 확인하기                 : 1번\n");
 		printf("                                        원하는 시간표 짜러가기               : 2번\n");

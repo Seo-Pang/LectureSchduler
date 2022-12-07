@@ -163,7 +163,6 @@ Schedule delete_lec(int index, Schedule sche)
 		{
 			sche.wed[i] = 0;
 		}
-
 		if (sche.thu[i] == index)
 		{
 			sche.thu[i] = 0;

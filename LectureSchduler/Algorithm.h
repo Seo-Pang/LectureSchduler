@@ -119,7 +119,6 @@ LecArray weight_setting_basic(Lecture lec, Preference(*user)[20])
 //가중치가 있는 모든 강의들을 DP를 이용해 sche를 반환
 Schedule DynamicProgrammingScheduling(LecArray lecture[MAX_LECTURE], UserInfo user)
 {
-
 	// DP에 서용할 가중치 배열[강의(물건)][강의 학점(무게)] {}
 	int maxCredit;
 	if (user.maxCredit < MAX_CREDIT) {
@@ -145,8 +144,6 @@ Schedule DynamicProgrammingScheduling(LecArray lecture[MAX_LECTURE], UserInfo us
 				newKnapsack.knapsackCount = DP[i - 1][0].knapsackCount;
 			else
 				newKnapsack.knapsackCount = DP[i - 1][DLC - lecture[i].credit].knapsackCount;
-
-
 
 			for (int i = 0; i < newKnapsack.knapsackCount; i++)
 			{
@@ -194,7 +191,6 @@ Schedule DynamicProgrammingScheduling(LecArray lecture[MAX_LECTURE], UserInfo us
 				printf("\n");
 			}
 		}
-
 		printf("==============a: %d\n", a++);
 	}
 
